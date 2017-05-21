@@ -1,0 +1,17 @@
+small_dataset:
+    model_file: trained_models/small_dataset_model
+    tf_idf: trained_models/small_dataset_tfidf
+    training:
+        dataset_filepath: dataset/training-data-small.txt
+    prediction:
+        dataset_filepath: dataset/test-data-small.txt
+        prediction_result_filepath: dataset/result-test-data-small
+
+large_dataset:
+    tf_idf: trained_models/small_dataset_tfidf
+    model_file: trained_models/large_dataset_model
+    training:
+        dataset_filepath: dataset/training-data-large.txt
+    prediction:
+        dataset_filepath: dataset/test-data-large.txt
+        prediction_result_filepath: dataset/result-test-data-large
