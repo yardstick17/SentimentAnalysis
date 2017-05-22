@@ -8,7 +8,7 @@ small_dataset:
         prediction_result_filepath: dataset/result-test-data-small
 
 large_dataset:
-    tf_idf: trained_models/small_dataset_tfidf
+    tf_idf: trained_models/large_dataset_tfidf
     model_file: trained_models/large_dataset_model
     training:
         dataset_filepath: dataset/training-data-large.txt
