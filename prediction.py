@@ -1,22 +1,17 @@
-import h5py
-import joblib
-import yaml
-from gensim import matutils
-
-from py_hdf5.hdf5 import append_batch_to_h5_dataset
-from text_model.bow_text_model import TextModel
-from dataset.pre_process_dataset import read_content
-from text_model.iterator_executor import IteratorExecutor
 import logging
-import os
 from itertools import count, groupby
 
+import h5py
+import joblib
+import numpy as np
 import yaml
+from gensim import matutils
+from pandas import DataFrame
 from sklearn.externals import joblib
 
 from dataset.pre_process_dataset import read_content
+from py_hdf5.hdf5 import append_batch_to_h5_dataset
 from text_model.bow_text_model import TextModel
-import numpy as np
 
 
 class Prediction:
@@ -48,11 +43,14 @@ class Prediction:
         prediction_file = self.config['prediction']['dataset_filepath']
         test_filestream = read_content(prediction_file)
         hf = self.get_hdf5('w')
-        for index, chunk_data in enumerate(zip(self.split_every(2000, test_filestream),
-                                               self.split_every(2000, test_filestream))):
+        for index, chunk_data in enumerate(self.split_every(10000, test_filestream)):
+
             logging.info('Predicting for chunk: {}'.format(index))
-            chunk_data = [text[0] for text in chunk_data[0]]
-            vector = self.text_model.texts_to_vector(chunk_data)
+
+            sentence_list = [text[0] for text in chunk_data]
+
+            vector = self.text_model.texts_to_vector(sentence_list)
+
             vector = np.asarray([matutils.sparse2full(vec, self.text_model.dictionary_length) for vec in vector])
             chunk_predictions = self.prediction_model.predict(vector)
             append_batch_to_h5_dataset(hf, self.PREDECTION_DATASET, chunk_predictions, (None,))
@@ -63,9 +61,10 @@ class Prediction:
     def write_result_to_file(self):
         hf = self.get_hdf5()
         result_dataset = hf[self.PREDECTION_DATASET]
-        lol = []
-        for l in result_dataset:
-            print(l)
+        result = (r for r in result_dataset)
+        df = DataFrame(result)
+        file = self.config['prediction']['prediction_result_filepath'] + '.csv'
+        df.to_csv(file, chunksize=1000, mode='a')
 
     @staticmethod
     def split_every(size, iterable):

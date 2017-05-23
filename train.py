@@ -86,8 +86,8 @@ class TrainModel:
         logging.info('Streaming data is set!!')
         clf = self.get_classifier()
         try:
-            for index, chunk_data in enumerate(zip(self.split_every(2000, corpus_tfidf_stream),
-                                                   self.split_every(2000, corpus_label_stream))):
+            for index, chunk_data in enumerate(zip(self.split_every(11000, corpus_tfidf_stream),
+                                                   self.split_every(11000, corpus_label_stream))):
                 chunk_tfidf, chunk_label = chunk_data
                 logging.info('Training on chunk: {}'.format(index))
                 chunk_text_vector = chunk_tfidf

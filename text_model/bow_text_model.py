@@ -18,7 +18,7 @@ _dir_name = None
 max_dictionary_size = 50000
 
 N_GRAM = 2
-CHUNK_SIZE = 100
+CHUNK_SIZE = 1000
 
 
 class TextModel:
