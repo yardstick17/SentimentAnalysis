@@ -109,7 +109,7 @@ class TrainModel:
             clf = joblib.load(filename=trained_model_file)
             logging.info('Sample predicting from the saved model %s ..' % clf.predict(X)[:5])
 
-        logging.info('Acha chalta hu Duwao me yaad rakhna')
+        logging.info('Model trained :) ')
 
 
 if __name__ == '__main__':
