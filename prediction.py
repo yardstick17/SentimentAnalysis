@@ -30,7 +30,7 @@ class Prediction:
 
     @staticmethod
     def read_dataset_config(dataset):
-        with open("config.yaml", 'r') as ymlfile:
+        with open("config.yml", 'r') as ymlfile:
             config = yaml.load(ymlfile)
         return config[dataset]
 

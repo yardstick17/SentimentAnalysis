@@ -96,6 +96,11 @@ class TrainModel:
                 Y = np.asarray(list(chunk_label))
 
                 for X, y in self.even_distribution(X, Y):
+                    if index != 0:
+                        y_pred = clf.predict(X)
+                        logging.info('BEFORE TRAINING\n%s' % classification_report(y, y_pred=y_pred))
+                        logging.info('==='*50)
+
                     logging.debug('Training  : {} {} Len of X and Y labeled data'.format(len(X), len(y)))
                     clf.partial_fit(X, y, classes=[0, 1])
                     y_pred = clf.predict(X)
